@@ -92,11 +92,11 @@ print(fourth_sentence)
 """ Перевірте чи починається якесь речення з "By the time".
 """
 # task 09 - Рішення
-index: int = new2_adwentures_of_tom_sawer.find("By the time")
-if index != -1:
-    print(f"By the time знайдено на позиції {index}.")
-else:
-    print("Підстрічка не знайдена.")
+adwentures_of_tom_sawer_sentences: tuple = new2_adwentures_of_tom_sawer.split(". ")
+print(adwentures_of_tom_sawer_sentences)
+for sentence in adwentures_of_tom_sawer_sentences:
+    if sentence.startswith("By the time"):
+        print(f"Рядок {sentence} починається з 'By the time'")
 
 # task 10
 """ Виведіть кількість слів останнього речення з adwentures_of_tom_sawer_sentences.
