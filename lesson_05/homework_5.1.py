@@ -58,7 +58,6 @@ filtered_cars = [
     and details[4] <= search_criteria[2]  # Ціна <=
 ]
 
-
 # Сортую за ціною (поле details[4])
 filtered_cars.sort(key=lambda car: car[1][4])
 
