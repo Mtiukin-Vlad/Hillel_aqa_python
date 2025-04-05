@@ -68,7 +68,7 @@ print(result)  # Виведе: 12
 """
 # Рішення завданя №3
 def average(numbers: list[float]) -> float: #Обчислює середнє арифметичне списку чисел.
-
+    return sum(numbers) / len(numbers)
 # Виклик функції
 example_numbers = [2, 4, 6]  # Простий список чисел
 result = average(example_numbers)  # Обчислення середнього значення
