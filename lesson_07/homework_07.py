@@ -3,23 +3,23 @@
 лише до максимального значення для добутку - 25.
 Код майже готовий, треба знайти помилки та випраавити\доповнити.
 """
-def multiplication_table(number):
-    # Initialize the appropriate variable
-    multiplier = 1
-
-    # Complete the while loop condition.
-    while multiplier <= number:
-        result = number * multiplier
-        # десь тут помила, а може не одна
-        if  result > "25":
-            # Enter the action to take if the result is greater than 25
-            pass
-        print(str(number) + "x" + str(multiplier) + "=" + str(result))
-
-        # Increment the appropriate variable
-        multi += 1
-
-multiplication_table(3)
+# def multiplication_table(number):
+#     # Initialize the appropriate variable
+#     multiplier = 1
+#
+#     # Complete the while loop condition.
+#     while multiplier <= number:
+#         result = number * multiplier
+#         # десь тут помила, а може не одна
+#         if  result > "25":
+#             # Enter the action to take if the result is greater than 25
+#             pass
+#         print(str(number) + "x" + str(multiplier) + "=" + str(result))
+#
+#         # Increment the appropriate variable
+#         multi += 1
+#
+# multiplication_table(3)
 # Should print:
 # 3x1=3
 # 3x2=6
