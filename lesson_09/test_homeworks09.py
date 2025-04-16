@@ -24,6 +24,15 @@ class TestTotalArea:
         expected = 100  # Якщо площа одного моря 0, то результат дорівнює площі іншого
         assert result == expected, f"Очікувалось {expected}, отримано {result}"
 
+# Негативні перевирки
+    def test_total_area_with_string(self):
+        try:
+            total_area("100", 200)
+            assert False, "Має бути TypeError при передачі рядка"
+        except TypeError:
+            pass
+
+
 # Тести для count_products
 class TestCountProducts:
 
@@ -47,6 +56,15 @@ class TestCountProducts:
         # Перевіряємо, що всі значення є невід'ємними цілими числами
         assert all(isinstance(x, int) and x >= 0 for x in result), f"Очікувалось, що всі значення позитивні, отримано {result}"
 
+# Негативні перевирки
+    def test_count_products_with_string_input(self):
+        try:
+            count_products("1000", 500, 400)
+            assert False, "Має бути TypeError при передачі рядка"
+        except TypeError:
+            pass
+
+
 # Тести для laptop_cost
 class TestLaptopCost:
 
@@ -69,3 +87,13 @@ class TestLaptopCost:
         result = laptop_cost(10_000, 12)
         expected = 120_000  # Якщо вартість комп'ютера 10 000 грн на місяць, а термін кредиту 12 місяців
         assert result == expected, f"Очікувалось {expected}, отримано {result}"
+
+# Негативні перевирки
+    def test_laptop_cost_with_none_input(self):
+        try:
+            laptop_cost(None, 12)
+            assert False, "Має бути TypeError при передачі None як щомісячного платежу"
+        except TypeError:
+            pass
+
+
