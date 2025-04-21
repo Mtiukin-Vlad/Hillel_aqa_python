@@ -26,11 +26,8 @@ class TestTotalArea:
 
 # Негативні перевирки
     def test_total_area_with_string(self):
-        try:
+        with pytest.raises(TypeError):
             total_area("100", 200)
-            assert False, "Має бути TypeError при передачі рядка"
-        except TypeError:
-            pass
 
 
 # Тести для count_products
@@ -58,11 +55,8 @@ class TestCountProducts:
 
 # Негативні перевирки
     def test_count_products_with_string_input(self):
-        try:
+        with pytest.raises(TypeError):
             count_products("1000", 500, 400)
-            assert False, "Має бути TypeError при передачі рядка"
-        except TypeError:
-            pass
 
 
 # Тести для laptop_cost
@@ -90,10 +84,6 @@ class TestLaptopCost:
 
 # Негативні перевирки
     def test_laptop_cost_with_none_input(self):
-        try:
+        with pytest.raises(TypeError):
             laptop_cost(None, 12)
-            assert False, "Має бути TypeError при передачі None як щомісячного платежу"
-        except TypeError:
-            pass
-
 
