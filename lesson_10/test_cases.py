@@ -14,7 +14,6 @@ class TestUserLogin:
         assert "Status: success" in content
         assert "INFO" in content
 
-
     def test_expired_log(self):
         log_event("Vlad", "expired")
         with open(LOG_FILE, "r") as file:
