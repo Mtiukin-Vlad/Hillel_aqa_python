@@ -1,4 +1,4 @@
-from task1 import TeamLead
+from teamlead import TeamLead
 
 # Перевіряю, чи TeamLead має всі необхідні атрибути
 def test_teamlead_attributes():
