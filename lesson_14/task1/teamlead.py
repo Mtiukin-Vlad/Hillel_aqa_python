@@ -1,6 +1,6 @@
 class Employee:
     def __init__(self, name, salary):
-        # Ініціалізую ім’я та зарплату співробітника
+        # Ініціалізую ім’я та зарплату співробітника.
         self.name = name
         self.salary = salary
 
@@ -8,7 +8,7 @@ class Manager(Employee):
     def __init__(self, name, salary, department):
         # Викликаю конструктор базового класу Employee
         super().__init__(name, salary)
-        # Ініціалізую відділ менеджера
+        # Ініціалізую відділ менеджера.
         self.department = department
 
 class Developer(Employee):
