@@ -1,30 +1,31 @@
-# Базовий клас Employee
 class Employee:
-    def __init__(self, name, salary, **kwargs):
-        super().__init__(**kwargs)  # Викликаю наступний конструктор в MRO
-        self.name = name  # Ім’я працівника
-        self.salary = salary  # Зарплата працівника
+    def __init__(self, name, salary):
+        # Ініціалізую ім’я та зарплату співробітника.
+        self.name = name
+        self.salary = salary
 
-# Клас Manager наслідується від Employee
 class Manager(Employee):
-    def __init__(self, department, **kwargs):
-        super().__init__(**kwargs)  # Викликаю конструктор Employee
-        self.department = department  # Відділ менеджера
+    def __init__(self, name, salary, department):
+        # Викликаю конструктор базового класу Employee
+        super().__init__(name, salary)
+        # Ініціалізую відділ менеджера.
+        self.department = department
 
-# Клас Developer наслідується від Employee
 class Developer(Employee):
-    def __init__(self, programming_language, **kwargs):
-        super().__init__(**kwargs)  # Викликаю конструктор Employee
-        self.programming_language = programming_language  # Мова програмування
+    def __init__(self, name, salary, programming_language):
+        # Викликаю конструктор базового класу Employee
+        super().__init__(name, salary)
+        # Ініціалізую мову програмування розробника
+        self.programming_language = programming_language
 
-# Клас TeamLead наслідує і від Manager, і від Developer
 class TeamLead(Manager, Developer):
     def __init__(self, name, salary, department, programming_language, team_size):
-        # Викликаю super(), який проходить по MRO
-        super().__init__(
-            name=name,
-            salary=salary,
-            department=department,
-            programming_language=programming_language,
-        )
-        self.team_size = team_size  # Розмір команди
+        # Явно викликаю конструктор базового класу Employee,
+        # щоб уникнути проблем з множинним наслідуванням
+        Employee.__init__(self, name, salary)
+        # Ініціалізую відділ
+        self.department = department
+        # Ініціалізую мову програмування
+        self.programming_language = programming_language
+        # Ініціалізую розмір команди
+        self.team_size = team_size
