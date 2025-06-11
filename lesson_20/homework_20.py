@@ -1,45 +1,61 @@
-import datetime
+import logging
+from datetime import datetime
 
-# Я відкриваю файл hblog.txt для зчитування всіх рядків
-with open("hblog.txt", "r") as file:
-    log_lines = file.readlines()
+# Налаштовую логер: записую WARNING і ERROR у файл hb_test.log
+logging.basicConfig(
+    filename='hb_test.log',
+    level=logging.WARNING,
+    format='%(levelname)s:%(asctime)s:%(message)s',
+    datefmt='%H:%M:%S',
+    encoding='utf-8'  # Вказую кодування UTF-8
+)
 
-# Я створюю список для збереження лише тих рядків, які містять потрібний ключ
-filtered_log = []
-for line in log_lines:
-    if "Key TSTFEED0300|7E3E|0400" in line:
-        filtered_log.append(line)
+def read_log_file(filename, key):
+    """Читаю лог-файл і вибираю рядки, де є потрібний ключ"""
+    filtered_lines = []
+    with open(filename, 'r') as file:
+        for line in file:
+            if key in line:
+                filtered_lines.append(line.strip())
+    return filtered_lines
 
-# Я створюю список для збереження часу з кожного відфільтрованого рядка
-timestamps = []
-for line in filtered_log:
-    # Я знаходжу позицію слова "Timestamp "
-    idx = line.find("Timestamp ")
-    if idx != -1:
-        # Я виділяю час після слова "Timestamp "
-        time_str = line[idx + len("Timestamp "): idx + len("Timestamp ") + 8]
-        # Я перетворюю цей рядок у формат часу datetime
-        time_obj = datetime.datetime.strptime(time_str, "%H:%M:%S")
-        timestamps.append(time_obj)
+def parse_timestamp(line):
+    """Знаходжу в рядку час (Timestamp) і конвертую його у datetime"""
+    pos = line.find("Timestamp ")
+    if pos == -1:
+        return None
+    time_str = line[pos + 10:pos + 18]  # Витягаю час у форматі HH:MM:SS
+    try:
+        return datetime.strptime(time_str, "%H:%M:%S")
+    except ValueError:
+        return None
 
-# Я відкриваю файл hb_test.log для запису результатів перевірки
-with open("hb_test.log", "w") as log_file:
-    # Я проходжу по кожній парі сусідніх часових міток
-    for i in range(len(timestamps) - 1):
-        t1 = timestamps[i]
-        t2 = timestamps[i + 1]
-        # Я обчислюю різницю в секундах між сусідніми часовими мітками
-        delta = (t1 - t2).total_seconds()
-        if delta < 0:
-            # Якщо перший час менший, я додаю 24 години (для переходу через північ)
-            delta += 24 * 3600
+def analyze_heartbeat(lines):
+    """Перевіряю різницю між сусідніми timestamp і логую попередження/помилки"""
+    for i in range(len(lines) - 1):
+        time_current = parse_timestamp(lines[i])
+        time_next = parse_timestamp(lines[i + 1])
+        if not time_current or not time_next:
+            continue  # Якщо час не парситься — пропускаю
 
-        # Я визначаю рівень повідомлення для логів (WARNING чи ERROR)
-        if 31 < delta < 33:
-            log_file.write(f"WARNING at {filtered_log[i]}Heartbeat delta: {delta} seconds\n")
-        elif delta >= 33:
-            log_file.write(f"ERROR at {filtered_log[i]}Heartbeat delta: {delta} seconds\n")
-        # Якщо різниця менше або дорівнює 31 секунді, я нічого не записую
+        diff = (time_current - time_next).total_seconds()
 
-# Я повідомляю, що аналіз завершено
-print("Аналіз завершено. Результати записані у файл hb_test.log")
+        # Логую WARNING, якщо інтервал 31 < heartbeat < 33 секунд
+        if 31 < diff < 33:
+            logging.warning(f'Затримка heartbeat {diff:.2f} секунд о {time_current.strftime("%H:%M:%S")}')
+        # Логую ERROR, якщо інтервал >= 33 секунд
+        elif diff >= 33:
+            logging.error(f'ПОМИЛКА! Затримка heartbeat {diff:.2f} секунд о {time_current.strftime("%H:%M:%S")}')
+
+def main():
+    """Основна функція запуску: читаю лог, аналізую heartbeat"""
+    key = "TSTFEED0300|7E3E|0400"
+    filename = 'hblog.txt'
+
+    print("Починаю аналіз логів...")
+    lines = read_log_file(filename, key)
+    analyze_heartbeat(lines)
+    print("Аналіз завершено. Результати у файлі hb_test.log")
+
+if __name__ == '__main__':
+    main()
