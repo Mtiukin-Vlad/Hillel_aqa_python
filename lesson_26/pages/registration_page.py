@@ -1,18 +1,28 @@
-from selenium.webdriver.common.by import By
-
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from . import registration_locators as loc
 
 class RegistrationPage:
-    """Я описую всі елементи реєстрації на сторінці QAuto."""
+    def __init__(self, driver, timeout=10):
+        self.driver = driver
+        self.wait = WebDriverWait(driver, timeout)
 
-    SIGNUP_BUTTON = (By.XPATH, "//button[text()='Sign up']")
+    def open(self):
+        self.driver.get("https://guest:welcome2qauto@qauto2.forstudy.space/")
 
-    NAME_INPUT = (By.NAME, "name")
-    LASTNAME_INPUT = (By.NAME, "lastName")
-    EMAIL_INPUT = (By.NAME, "email")
-    PASSWORD_INPUT = (By.NAME, "password")
-    REPASSWORD_INPUT = (By.NAME, "repeatPassword")
+    def open_signup_form(self):
+        self.wait.until(EC.element_to_be_clickable(loc.SIGNUP_BUTTON)).click()
 
-    SUBMIT_BUTTON = (By.XPATH, "//button[contains(text(), 'Register')]")
+    def fill_form(self, name, lastname, email, password, repeatPassword):
+        self.wait.until(EC.visibility_of_element_located(loc.NAME_INPUT))
+        self.driver.find_element(*loc.NAME_INPUT).send_keys(name)
+        self.driver.find_element(*loc.LASTNAME_INPUT).send_keys(lastname)
+        self.driver.find_element(*loc.EMAIL_INPUT).send_keys(email)
+        self.driver.find_element(*loc.PASSWORD_INPUT).send_keys(password)
+        self.driver.find_element(*loc.REPASSWORD_INPUT).send_keys(repeatPassword)
 
-    SUCCESS_TEXT = (By.CSS_SELECTOR, "div.alert.alert-success")
+    def submit(self):
+        self.driver.find_element(*loc.SUBMIT_BUTTON).click()
 
+    def get_success_text(self):
+        return self.wait.until(EC.visibility_of_element_located(loc.SUCCESS_TEXT)).text
