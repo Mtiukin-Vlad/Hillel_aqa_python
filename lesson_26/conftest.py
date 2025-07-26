@@ -14,10 +14,11 @@ def driver():
     """
     Я відкриваю браузер і переходжу на сайт із логіном і паролем у URL.
     """
+
     options = webdriver.ChromeOptions()
     options.add_argument("--start-maximized")
 
-    drv = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    drv = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
     drv.get("https://guest:welcome2qauto@qauto2.forstudy.space/")
     yield drv
     drv.quit()
