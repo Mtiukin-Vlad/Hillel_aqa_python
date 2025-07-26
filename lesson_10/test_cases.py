@@ -1,5 +1,3 @@
-import os
-import logging
 from homework_10 import log_event
 
 LOG_FILE = 'login_system.log'
