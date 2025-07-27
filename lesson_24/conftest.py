@@ -1,11 +1,16 @@
+import chromedriver_autoinstaller
 import pytest
 from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.service import Service as ChromeService
 
 @pytest.fixture
-def driver():
-    service = ChromeService(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service)
+def selenium_driver_elements():
+    # Ініціалізація веб-драйвера для Chrome
+    driver = webdriver.Chrome()
+
+    # # Відкриття веб-сторінки
+    driver.get('http://localhost:8000/elements.html')
+
     yield driver
+
+    # Закриття браузера
     driver.quit()
